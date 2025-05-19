@@ -1,5 +1,5 @@
 const config = {
-    localStoragePrefix: "crossing",
-    title: "CrosSing Sorter",
+    localStoragePrefix: "bandori",
+    title: "Bang Dream! Sorter",
     description: "Party rank sorter for your custom list of songs."
 };
