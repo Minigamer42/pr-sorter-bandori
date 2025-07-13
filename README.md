@@ -40,7 +40,7 @@ To set up a custom sorter for your specific party ranking, follow these steps:
     }
     ```
    - Regex because I'm lazy:
-   `(\d+)\t(.+)?\t(.+)\t\t(.+)\n?` to `{"id": $1, "anime": "$2", "name": "$3", "video": "$4", "mp3": null },\n`
+   `(\d+)\t(.+)\t(.+)\t(.+)\t(.*)\n?` to `{"id": $1, "anime": "$2", "name": "$3", "video": "$4", "mp3": "$5"},\n`
    - Example:
      ```json
      [
