@@ -70,34 +70,40 @@ function showDuel(id1, id2) {
 
         let videoElement;
 
-        if (!music.video && !music.mp3) {
-            videoElement = "<div>Video and MP3 not available</div>";
-        } else if (music.video && (video || music.mp3 === null)) {
-            if (music.video.includes("youtube.com")) {
-                const videoId = new URL(music.video).searchParams.get("v");
+        if (music.video && (video || !music.mp3)) {
+            if (music.video.includes('youtube.com')) {
+                const videoId = new URL(music.video).searchParams.get('v');
                 videoElement = `<iframe src="https://www.youtube-nocookie.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
             } else if (music.video.includes('youtu.be')) {
                 const videoId = music.video.match(/youtu.be\/([\w-]+)/)[1];
                 videoElement = `<iframe src="https://www.youtube-nocookie.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-            } else if (music.video.endsWith(".webm") || music.video.endsWith(".mp4")) {
-                if (music.video.includes("animemusicquiz")) {
+            } else if (music.video.endsWith('.webm') || music.video.endsWith('.mp4')) {
+                if (music.video.includes('animemusicquiz')) {
                     videoElement = `<video controls><source src="https://${region}dist.animemusicquiz.com/${music.video.split('/').pop()}" type="video/webm"></video>`;
                 } else {
                     videoElement = `<video controls><source src="${music.video}" type="video/webm"></video>`;
                 }
-            } else {
-                videoElement = "<div>Vidéo non disponible</div>";
+            } else if (music.video.endsWith('.mp3')) {
+                music.mp3 = music.video;
+                music.video = null;
             }
-        } else if (music.mp3) {
-            if (music.mp3.includes("animemusicquiz")) {
+        }
+        if (!videoElement && music.mp3) {
+            if (music.mp3.includes('animemusicquiz')) {
                 videoElement = `<audio controls><source src="https://${region}dist.animemusicquiz.com/${music.mp3.split('/').pop()}" type="audio/mp3"></audio>`;
             } else {
                 videoElement = `<audio controls><source src="${music.mp3}" type="audio/mp3"></audio>`;
             }
-        } else {
-            videoElement = "<div>MP3 not available!</div>";
         }
-
+        if (!videoElement) {
+            videoElement = '<div>Video and MP3 not available</div>';
+            if (music.video) {
+                videoElement += `<p>${music.video}</p>`;
+            }
+            if (music.mp3) {
+                videoElement += `<p>${music.mp3}</p>`;
+            }
+        }
         card.innerHTML = `
       ${videoElement}
       <div class="anime">${music.anime}</div>
